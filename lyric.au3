@@ -275,7 +275,7 @@ EndFunc
 ; Link ..........:
 ; Example .......:
 ;============================================================================================
-Func _LrcDownLoad_baidu($a,$t,$xml="")
+Func _LrcDownLoad_baidu($a,$t,$xml='')
 	Local $send
 	If Not $xml Then
 	    $send='box.zhangmen.baidu.com|'&StringFormat($list_baidu,_UrlToHex(_clear($t,False),1,'ansi'),_UrlToHex(_clear($a,False),1,'ansi'))&'|0||||'
@@ -306,7 +306,7 @@ EndFunc
 ; #FUNCTION# ;===============================================================================
 ; Name...........: _LrcList_ilrc
 ; Description ...: 获取9ilrc搜索结果
-; Syntax.........: _LrcList_ilrc($key,$ki)
+; Syntax.........: _LrcList_ilrc($artist, $title)
 ; Parameters ....: $key - 关键词
 ;                  $ki - 关键词类别
 ; Return values .: Success - Returns 包含搜索结果的数组
@@ -323,14 +323,11 @@ EndFunc
 ; Link ..........:
 ; Example .......:
 ;============================================================================================
-Func _LrcList_ilrc($key,$ki=1, $xml='')
+Func _LrcList_ilrc($a,$t, $xml='')
 	Local $send, $temp1,$temp2,$temp3,$temp4,$tem='',$i_url,$p_url,$tt=0
 	If Not $xml Then
-	    If $ki=1 Then
-	       $send = 'www.9ilrc.com|/search.php?keyword='&_UrlToHex(_clear($key,False),1,'unicode')&'&radio=song'&'|1||||'
-	    Else
-		   $send = 'www.9ilrc.com|/search.php?keyword='&_UrlToHex(_clear($key,False),1,'unicode')&'&radio=album'&'|1||||'
-	    EndIf
+	    $send = 'www.5ilrc.com|/souge1.asp|0||POST|radiobutton=jq&zj=&gm='&_UrlToHex(_clear($t,False),1,'ansi') & _
+		'&gs='&_UrlToHex(_clear($a,False),1,'ansi')&'|http://www.5ilrc.com/souge1.asp|Content-Type: application/x-www-form-urlencoded'
 		If _CoProcSend($load_Pro, $send) Then
 
 	    Else
@@ -338,14 +335,15 @@ Func _LrcList_ilrc($key,$ki=1, $xml='')
 		EndIf
 		Return
     Else
-	    $temp1 = StringRegExp(StringRegExpReplace($xml,'\r?\n',''),'<tr>(?=\<td)(.*?)(?<=td\>)</tr>',3,1)
+		MsgBox(0,"",$xml)
+	    $temp1 = StringRegExp(StringRegExpReplace($xml,'\r?\n',''),'\<TD width\="30%".*?</tr>',3,1)
 	    If Not @error Then
 	    	Dim $i_url[UBound($temp1)][4]
 	    	For $i=0 To UBound($temp1)-1
-	    		$temp3 = StringRegExp($temp1[$i],'href="(lrc.php.*?)"',3,1)
+	    		$temp3 = StringRegExp($temp1[$i],'href="(/Song_\d+.html)"',3,1)
 	    		If @error Then ContinueLoop
 	    		$temp1[$i]=StringReplace($temp1[$i],'</td>','%%')
-	    		$temp2=StringSplit(StringRegExpReplace($temp1[$i],'<[^>]+>',''),'%%',1+2)
+	    		$temp2=StringSplit(StringRegExpReplace($temp1[$i],'\h*<[^>]+>\h*',''),'%%',1+2)
 	    		$p_url=StringSplit($temp3[0]&'|'&$temp2[2]&'|'&$temp2[0]&'|'&$temp2[1],'|',2)
 	    		For $j=0 To 3
 	    			$i_url[$i][$j]=$p_url[$j]
@@ -591,13 +589,13 @@ Func _load_()
  			_WinHttpSetTimeouts($hOpen,2000)
 ;~ 			_WinHttpSetStatusCallback($hOpen, $hWINHTTP_STATUS_CALLBACK)
 			If $hProxy Then
-            Local $tProxyInfo[2] = [DllStructCreate($tagWINHTTP_PROXY_INFO), _
-	        DllStructCreate('wchar proxychars[' & StringLen($ProxyServer)+1 & ']; wchar proxybypasschars[' & StringLen("localhost")+1 & ']')]
-			DllStructSetData($tProxyInfo[0], "dwAccessType", $WINHTTP_ACCESS_TYPE_NAMED_PROXY)
-			If StringLen($ProxyServer) Then DllStructSetData($tProxyInfo[0], "lpszProxy", DllStructGetPtr($tProxyInfo[1], 'proxychars'))
-			If StringLen("localhost") Then DllStructSetData($tProxyInfo[0], "lpszProxyBypass", DllStructGetPtr($tProxyInfo[1], 'proxybypasschars'))
-			DllStructSetData($tProxyInfo[1], "proxychars", $ProxyServer)
-			DllStructSetData($tProxyInfo[1], "proxybypasschars", "localhost")
+                Local $tProxyInfo[2] = [DllStructCreate($tagWINHTTP_PROXY_INFO), _
+	            DllStructCreate('wchar proxychars[' & StringLen($ProxyServer)+1 & ']; wchar proxybypasschars[' & StringLen("localhost")+1 & ']')]
+			    DllStructSetData($tProxyInfo[0], "dwAccessType", $WINHTTP_ACCESS_TYPE_NAMED_PROXY)
+			    If StringLen($ProxyServer) Then DllStructSetData($tProxyInfo[0], "lpszProxy", DllStructGetPtr($tProxyInfo[1], 'proxychars'))
+			    If StringLen("localhost") Then DllStructSetData($tProxyInfo[0], "lpszProxyBypass", DllStructGetPtr($tProxyInfo[1], 'proxybypasschars'))
+			    DllStructSetData($tProxyInfo[1], "proxychars", $ProxyServer)
+			    DllStructSetData($tProxyInfo[1], "proxybypasschars", "localhost")
                 _WinHttpSetOption($hOpen, $WINHTTP_OPTION_PROXY, $tProxyInfo[0])
                 $hConnect = _WinHttpConnect($hOpen, $info[0])
 			    _WinHttpSetOption($hConnect, $WINHTTP_OPTION_PROXY_USERNAME, "usrname")
@@ -608,7 +606,9 @@ Func _load_()
 				$hConnect = _WinHttpConnect($hOpen, $info[0])
 				$hRequest = _WinHttpOpenRequest($hConnect, $info[4], $info[1], 'HTTP/1.1', $info[6])
 			EndIf
-			If _WinHttpSendRequest($hRequest, Default,$info[5]) Then
+			Local $hHeader = -1
+			If UBound($info) = 8 Then $hHeader = $info[7]
+			If _WinHttpSendRequest($hRequest, $hHeader, $info[5]) Then
 				_WinHttpReceiveResponse($hRequest)
 				If $info[2]=2 Then
 					$sReturned=_WinHttpSimpleReadData($hRequest,2)
@@ -708,6 +708,7 @@ Func _ClearXml($x)
 EndFunc
 
 Func _UrlToHex($URL,$flag,$encode)   ;url编码
+    If Not $URL Then Return ''
 	Switch $encode
 		Case 'unicode'
             $Binary = StringReplace(StringToBinary ($URL, 4), '0x', '', 1)

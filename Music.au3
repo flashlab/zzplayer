@@ -368,14 +368,15 @@ Func gui()
 						_ToolTip('¥ÌŒÛ', "Worker not Responding (" & @error & ")", 3, 3)
 					EndIf
 				ElseIf $mode = 4 Then
-					If _CoProcSend($load_Pro, 'www.9ilrc.com|/' & $pre_get[0] & '|0||||http://www.9ilrc.com') Then
+					If _CoProcSend($load_Pro, 'www.5ilrc.com|/downlrc.asp|0||POST|gm_down=%31&id_gc=' & _
+						StringTrimLeft(StringTrimRight($pre_get[0], 4), 6)&'|http://www.5ilrc.com|Content-Type: application/x-www-form-urlencoded') Then
 						_ShowLoading()
 					Else
 						_ToolTip('¥ÌŒÛ', "Worker not Responding (" & @error & ")", 3, 3)
 					EndIf
 				ElseIf $mode = 9 Then
 					If _CoProcSend($load_Pro, 'music.qq.com|/miniportal/static/lyric/' & _
-							StringRight($pre_get[0], 2) & '/' & $pre_get[0] & '.xml|0||||http://www.9ilrc.com') Then
+							StringRight($pre_get[0], 2) & '/' & $pre_get[0] & '.xml|0||||') Then
 						_ShowLoading()
 					Else
 						_ToolTip('¥ÌŒÛ', "Worker not Responding (" & @error & ")", 3, 3)
@@ -420,7 +421,7 @@ Func gui()
 		Case $save_cover
 			Local $cover_name = StringRegExp($cover_put, '^.*\\(.*?)\.(\w+)$', 3, 1)
 			If @error Or $cover_put = @ScriptDir & "\ICON\music-default.jpg" Then Return
-			Local $Save_cover_Dir = FileSaveDialog('±£¥ÊÕº∆¨', $root_folder & '\' & $bLVItems[$iSelected][7], _
+			Local $Save_cover_Dir = FileSaveDialog('±£¥ÊÕº∆¨', $root_folder, _
 					'ÕºœÒŒƒº˛(*.' & $cover_name[1] & ')|À˘”–Œƒº˛(*.*)', 16, $cover_name[0] & '.' & $cover_name[1], $hGUI)
 			If Not @error Then
 				FileCopy($cover_put, $Save_cover_Dir, 9)
@@ -647,7 +648,7 @@ Func Reciver($vParameter)
 								_GUICtrlListView_HideColumn($sub_list, 5)
 								GUISetState(@SW_SHOW, $Lrc_Choose)
 							EndIf
-							WinSetTitle($Lrc_Choose, '', '—°‘Ò∏Ë¥  -  9ilrc')
+							WinSetTitle($Lrc_Choose, '', '—°‘Ò∏Ë¥  -  5ilrc')
 						Case 5
 							Return _LrcDownLoad_baidu(0, 0, $vParameter)
 						Case 6
@@ -1216,7 +1217,7 @@ Func _Search($flag)
 				_LrcDownLoad_baidu(GUICtrlRead($artist), GUICtrlRead($title))
 			Case 4
 				$mode = 4
-				_LrcList_ilrc(GUICtrlRead($title), 1)
+				_LrcList_ilrc(GUICtrlRead($artist), GUICtrlRead($title))
 			Case 5
 				$mode = 9
 				_LrcList_qq(GUICtrlRead($artist), GUICtrlRead($title))
@@ -1410,7 +1411,7 @@ Func _ToolBarMenu()
 			_GUICtrlToolbar_SetButtonText($hToolbar, $idDat, '∞Ÿ∂»')
 			$toolbar_subitem[0] = 3
 		Case $ilrc
-			_GUICtrlToolbar_SetButtonText($hToolbar, $idDat, 'æÕ∞Æ∏Ë¥ ')
+			_GUICtrlToolbar_SetButtonText($hToolbar, $idDat, 'Œ·∞Æ∏Ë¥ ')
 			$toolbar_subitem[0] = 4
 		Case $qqyy
 			_GUICtrlToolbar_SetButtonText($hToolbar, $idDat, 'QQ“Ù¿÷')
@@ -2009,7 +2010,7 @@ Func _WM_NOTIFY($hWndGUI, $MsgID, $WParam, $LParam)
 							_GUICtrlMenu_AddMenuItem($hMenu, "ø·Œ““Ù¿÷", $kwyy)
 							_GUICtrlMenu_AddMenuItem($hMenu, "√‘ƒ„∏Ë¥ ", $mngc)
 							_GUICtrlMenu_AddMenuItem($hMenu, "∞Ÿ∂»“Ù¿÷", $bdyy)
-							_GUICtrlMenu_AddMenuItem($hMenu, "æÕ∞Æ∏Ë¥ ", $ilrc)
+							_GUICtrlMenu_AddMenuItem($hMenu, "Œ·∞Æ∏Ë¥ ", $ilrc)
 							_GUICtrlMenu_AddMenuItem($hMenu, "QQ“Ù¿÷", $qqyy)
 						Case $idSav
 							_GUICtrlMenu_AddMenuItem($hMenu, "±£¥ÊŒ™lrc", $save_as_lrc)
