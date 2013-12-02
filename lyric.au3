@@ -305,7 +305,7 @@ Func _LrcDownLoad_baidu($a,$t,$xml='')
 EndFunc
 ; #FUNCTION# ;===============================================================================
 ; Name...........: _LrcList_ilrc
-; Description ...: 获取9ilrc搜索结果
+; Description ...: 获取5ilrc搜索结果
 ; Syntax.........: _LrcList_ilrc($artist, $title)
 ; Parameters ....: $key - 关键词
 ;                  $ki - 关键词类别
@@ -353,7 +353,7 @@ Func _LrcList_ilrc($a,$t, $xml='')
 			ReDim $i_url[$tt][4]
 	    	Return $i_url
 	    Else
-	    	Return _ToolTip("抱歉","没有在9ilrc搜索到歌词", 3,1)
+	    	Return _ToolTip("抱歉","没有在5ilrc搜索到歌词", 3,1)
 	    EndIf
 	EndIf
 EndFunc
@@ -411,7 +411,7 @@ Func _load_()
 	Global $info[1]=['net']
 	Local $hOpen, $hConnect, $hRequest, $hProxy=False, $ProxyServer, $sReturned, $ProcessAddy, $net=0, $ret = '',$ping=''
 	Local $timeout=7000, $ttl=255, $count=0, $pingID, $status
-	Global $Addr[8] = ["ttlrcct.qianqian.com","search.koowo.com","newlyric.koowo.com","search.crintsoft.com","viewlyrics.com","box.zhangmen.baidu.com","www.9ilrc.com","qqmusic.qq.com"]
+	Global $Addr[8] = ["ttlrcct.qianqian.com","search.koowo.com","newlyric.koowo.com","search.crintsoft.com","viewlyrics.com","box.zhangmen.baidu.com","www.5ilrc.com","qqmusic.qq.com"]
 	Global Const $tagWINHTTP_PROXY_INFO = "DWORD  dwAccessType;ptr lpszProxy;ptr lpszProxyBypass;"
 	Global Const $DONT_FRAGMENT = 2, $IP_SUCCESS = 0, $IP_DEST_NET_UNREACHABLE = 11002, $IP_DEST_HOST_UNREACHABLE = 11003, $IP_DEST_PROT_UNREACHABLE = 11004, $IP_DEST_PORT_UNREACHABLE = 11005, _
     $IP_NO_RESOURCES = 11006, $IP_HW_ERROR = 11008, $IP_PACKET_TOO_BIG = 11009, $IP_REQ_TIMED_OUT = 11010, $IP_BAD_REQ = 11011, $IP_BAD_ROUTE = 11012, _
@@ -445,7 +445,7 @@ Func _load_()
 		If Not IsArray($info) Then ContinueLoop
 		If $info[0] = 'net' Then
             If _WinAPI_GetVersion() < '6.0' Then
-			    $sReturned = Binary('0x21') & StringToBinary(Ping("qq.com",500))
+			    $sReturned = Binary('0x21') & StringToBinary(_WinAPI_IsNetworkAlive())
 			Else
                 $sReturned = Binary('0x21') & StringToBinary(_WinAPI_IsInternetConnected())
 			EndIf

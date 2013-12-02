@@ -6,7 +6,7 @@
     Filename:       APIConstants.au3
     Description:    Constants that can be used with WinAPIEx UDF library
     Author:         Yashied
-    Version:        3.7 / 3.3.8.0
+    Version:        3.8 / 3.3.8.0
     Requirements:   AutoIt v3.3 +, Developed/Tested on Windows XP Pro Service Pack 2 and Windows Vista/7
     Uses:           BorderConstants.au3, Constants.au3, FileConstants.au3, FontConstants.au3, FrameConstants.au3, MemoryConstants.au3, MenuConstants.au3, ProcessConstants.au3, SecurityConstants.au3, WindowsConstants.au3
     Note:           -
@@ -472,6 +472,22 @@ Global Const $WM_DBNOTIFICATION = 0x03FD
 Global Const $WM_NETCONNECT = 0x03FE
 Global Const $WM_HIBERNATE = 0x03FF
 ;Global Const $WM_USER = 0x0400
+
+; ===============================================================================================================================
+; Common HRESULT errors
+; ===============================================================================================================================
+
+Global Const $S_OK = 0x00000000
+Global Const $E_ABORT = 0x80004004
+Global Const $E_ACCESSDENIED = 0x80070005
+Global Const $E_FAIL = 0x80004005
+Global Const $E_HANDLE = 0x80070006
+;Global Const $E_INVALIDARG = 0x80070057
+Global Const $E_NOINTERFACE = 0x80004002
+Global Const $E_NOTIMPL = 0x80004001
+Global Const $E_OUTOFMEMORY = 0x8007000E
+Global Const $E_POINTER = 0x80004003
+Global Const $E_UNEXPECTED = 0x8000FFFF
 
 ; ===============================================================================================================================
 ; DEVMODE structure
@@ -1160,21 +1176,6 @@ Global Const $ILLUMINANT_FLUORESCENT = $ILLUMINANT_F2
 Global Const $ILLUMINANT_NTSC = $ILLUMINANT_C
 
 ; ===============================================================================================================================
-; _WinAPI_CreateDesktop(), _WinAPI_OpenDesktop(), _WinAPI_OpenInputDesktop()
-; ===============================================================================================================================
-
-Global Const $DESKTOP_CREATEMENU = 0x0004
-Global Const $DESKTOP_CREATEWINDOW = 0x0002
-Global Const $DESKTOP_ENUMERATE = 0x0040
-Global Const $DESKTOP_HOOKCONTROL = 0x0008
-Global Const $DESKTOP_JOURNALPLAYBACK = 0x0020
-Global Const $DESKTOP_JOURNALRECORD = 0x0010
-Global Const $DESKTOP_READOBJECTS = 0x0001
-Global Const $DESKTOP_SWITCHDESKTOP = 0x0100
-Global Const $DESKTOP_WRITEOBJECTS = 0x0080
-Global Const $DESKTOP_ALL_ACCESS = BitOR($DESKTOP_CREATEMENU, $DESKTOP_CREATEWINDOW, $DESKTOP_ENUMERATE, $DESKTOP_HOOKCONTROL, $DESKTOP_JOURNALPLAYBACK, $DESKTOP_JOURNALRECORD, $DESKTOP_READOBJECTS, $DESKTOP_SWITCHDESKTOP, $DESKTOP_WRITEOBJECTS)
-
-; ===============================================================================================================================
 ; _WinAPI_CreateDIBSection()
 ; ===============================================================================================================================
 
@@ -1240,11 +1241,11 @@ Global Const $FILE_FLAG_DELETE_ON_CLOSE = 0x04000000
 Global Const $FILE_FLAG_NO_BUFFERING = 0x20000000
 Global Const $FILE_FLAG_OPEN_NO_RECALL = 0x00100000
 Global Const $FILE_FLAG_OPEN_REPARSE_POINT = 0x00200000
-Global Const $FILE_FLAG_OVERLAPPED = 0x40000000
+;Global Const $FILE_FLAG_OVERLAPPED = 0x40000000
 Global Const $FILE_FLAG_POSIX_SEMANTICS = 0x0100000
 Global Const $FILE_FLAG_RANDOM_ACCESS = 0x10000000
 Global Const $FILE_FLAG_SEQUENTIAL_SCAN = 0x08000000
-Global Const $FILE_FLAG_WRITE_THROUGH = 0x80000000
+;Global Const $FILE_FLAG_WRITE_THROUGH = 0x80000000
 
 Global Const $SECURITY_ANONYMOUS = 0x00000000
 Global Const $SECURITY_CONTEXT_TRACKING = 0x00040000
@@ -1288,6 +1289,89 @@ Global Const $FILE_MAP_EXECUTE = 0x0020
 Global Const $FILE_MAP_READ = 0x0004
 Global Const $FILE_MAP_WRITE = 0x0002
 Global Const $FILE_MAP_ALL_ACCESS = $SECTION_ALL_ACCESS
+
+; ===============================================================================================================================
+; _WinAPI_CreateFont*()
+; ===============================================================================================================================
+
+;Global Const $FW_DONTCARE = 0
+;Global Const $FW_THIN = 100
+;Global Const $FW_EXTRALIGHT = 200
+;Global Const $FW_ULTRALIGHT = 200
+;Global Const $FW_LIGHT = 300
+;Global Const $FW_NORMAL = 400
+;Global Const $FW_REGULAR = 400
+;Global Const $FW_MEDIUM = 500
+;Global Const $FW_SEMIBOLD = 600
+;Global Const $FW_DEMIBOLD = 600
+;Global Const $FW_BOLD = 700
+;Global Const $FW_EXTRABOLD = 800
+;Global Const $FW_ULTRABOLD = 800
+;Global Const $FW_HEAVY = 900
+;Global Const $FW_BLACK = 900
+
+;Global Const $ANSI_CHARSET = 0
+Global Const $ARABIC_CHARSET = 178
+;Global Const $BALTIC_CHARSET = 186
+;Global Const $CHINESEBIG5_CHARSET = 136
+;Global Const $DEFAULT_CHARSET = 1
+;Global Const $EASTEUROPE_CHARSET = 238
+;Global Const $GB2312_CHARSET = 134
+;Global Const $GREEK_CHARSET = 161
+;Global Const $HANGEUL_CHARSET = 129
+Global Const $HEBREW_CHARSET = 177
+Global Const $JOHAB_CHARSET = 130
+;Global Const $MAC_CHARSET = 77
+;Global Const $OEM_CHARSET = 255
+;Global Const $RUSSIAN_CHARSET = 204
+;Global Const $SHIFTJIS_CHARSET = 128
+;Global Const $SYMBOL_CHARSET = 2
+Global Const $THAI_CHARSET = 222
+;Global Const $TURKISH_CHARSET = 162
+;Global Const $VIETNAMESE_CHARSET = 163
+
+;Global Const $OUT_CHARACTER_PRECIS = 2
+;Global Const $OUT_DEFAULT_PRECIS = 0
+;Global Const $OUT_DEVICE_PRECIS = 5
+;Global Const $OUT_OUTLINE_PRECIS = 8
+;Global Const $OUT_PS_ONLY_PRECIS = 10
+;Global Const $OUT_RASTER_PRECIS = 6
+;Global Const $OUT_STRING_PRECIS = 1
+;Global Const $OUT_STROKE_PRECIS = 3
+;Global Const $OUT_TT_ONLY_PRECIS = 7
+;Global Const $OUT_TT_PRECIS = 4
+
+;Global Const $CLIP_CHARACTER_PRECIS = 0x0001
+;Global Const $CLIP_DEFAULT_PRECIS = 0x0000
+Global Const $CLIP_DFA_DISABLE = 0x0030
+;Global Const $CLIP_EMBEDDED = 0x0080
+;Global Const $CLIP_LH_ANGLES = 0x0010
+;Global Const $CLIP_MASK = 0x000F
+Global Const $CLIP_DFA_OVERRIDE = 0x0040
+;Global Const $CLIP_STROKE_PRECIS = 0x0002
+;Global Const $CLIP_TT_ALWAYS = 0x0020
+
+;Global Const $ANTIALIASED_QUALITY = 4
+Global Const $CLEARTYPE_QUALITY = 5
+;Global Const $DEFAULT_QUALITY = 0
+;Global Const $DRAFT_QUALITY = 1
+;Global Const $NONANTIALIASED_QUALITY = 3
+;Global Const $PROOF_QUALITY = 2
+
+;Global Const $DEFAULT_PITCH = 0
+;Global Const $FIXED_PITCH = 1
+;Global Const $VARIABLE_PITCH = 2
+
+;Global Const $FF_DECORATIVE = 80
+;Global Const $FF_DONTCARE = 0
+;Global Const $FF_MODERN = 48
+;Global Const $FF_ROMAN = 16
+;Global Const $FF_SCRIPT = 64
+;Global Const $FF_SWISS = 32
+
+Global Const $FS_REGULAR = 0x00
+Global Const $FS_BOLD = 0x01
+Global Const $FS_ITALIC = 0x02
 
 ; ===============================================================================================================================
 ; _WinAPI_CreatePen(), _WinAPI_ExtCreatePen()
@@ -1808,6 +1892,24 @@ Global Const $SYMOPT_SECURE = 0x00040000
 Global Const $SYMOPT_UNDNAME = 0x00000002
 
 ; ===============================================================================================================================
+; _WinAPI_EnumFontFamilies()
+; ===============================================================================================================================
+
+Global Const $DEVICE_FONTTYPE = 0x2
+Global Const $RASTER_FONTTYPE = 0x1
+Global Const $TRUETYPE_FONTTYPE = 0x4
+
+Global Const $NTM_BOLD = 0x00000020
+Global Const $NTM_DSIG = 0x00200000
+Global Const $NTM_ITALIC = 0x00000001
+Global Const $NTM_MULTIPLEMASTER = 0x00080000
+Global Const $NTM_NONNEGATIVE_AC = 0x00010000
+Global Const $NTM_PS_OPENTYPE = 0x00020000
+Global Const $NTM_REGULAR = 0x00000040
+Global Const $NTM_TT_OPENTYPE = 0x00040000
+Global Const $NTM_TYPE1 = 0x00100000
+
+; ===============================================================================================================================
 ; _WinAPI_EnumProcessModules()
 ; ===============================================================================================================================
 
@@ -1884,22 +1986,22 @@ Global Const $RT_VXD = 20
 ; _WinAPI_FindText(), _WinAPI_ReplaceText()
 ; ===============================================================================================================================
 
-Global Const $FR_DIALOGTERM = 0x00000040
+;Global Const $FR_DIALOGTERM = 0x00000040
 ;Global Const $FR_DOWN = 0x00000001
-Global Const $FR_ENABLEHOOK = 0x00000100
-Global Const $FR_ENABLETEMPLATE = 0x00000200
-Global Const $FR_ENABLETEMPLATEHANDLE = 0x00002000
-Global Const $FR_FINDNEXT = 0x00000008
-Global Const $FR_HIDEUPDOWN = 0x00004000
-Global Const $FR_HIDEMATCHCASE = 0x00008000
-Global Const $FR_HIDEWHOLEWORD = 0x00010000
+;Global Const $FR_ENABLEHOOK = 0x00000100
+;Global Const $FR_ENABLETEMPLATE = 0x00000200
+;Global Const $FR_ENABLETEMPLATEHANDLE = 0x00002000
+;Global Const $FR_FINDNEXT = 0x00000008
+;Global Const $FR_HIDEUPDOWN = 0x00004000
+;Global Const $FR_HIDEMATCHCASE = 0x00008000
+;Global Const $FR_HIDEWHOLEWORD = 0x00010000
 ;Global Const $FR_MATCHCASE = 0x00000004
 Global Const $FR_NOMATCHCASE = 0x00000800
 Global Const $FR_NOUPDOWN = 0x00000400
 Global Const $FR_NOWHOLEWORD = 0x00001000
-Global Const $FR_REPLACE = 0x00000010
-Global Const $FR_REPLACEALL = 0x00000020
-Global Const $FR_SHOWHELP = 0x00000080
+;Global Const $FR_REPLACE = 0x00000010
+;Global Const $FR_REPLACEALL = 0x00000020
+;Global Const $FR_SHOWHELP = 0x00000080
 ;Global Const $FR_WHOLEWORD = 0x00000002
 
 ; ===============================================================================================================================
@@ -2305,6 +2407,31 @@ Global Const $GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS = 0x0004
 Global Const $GET_MODULE_HANDLE_EX_FLAG_PIN = 0x0001
 Global Const $GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT = 0x0002
 Global Const $GET_MODULE_HANDLE_EX_FLAG_DEFAULT = 0x0000
+
+; ===============================================================================================================================
+; _WinAPI_GetPEType()
+; ===============================================================================================================================
+
+Global Const $IMAGE_FILE_MACHINE_UNKNOWN = 0x0000
+Global Const $IMAGE_FILE_MACHINE_AM33 = 0x01D3
+Global Const $IMAGE_FILE_MACHINE_AMD64 = 0x8664
+Global Const $IMAGE_FILE_MACHINE_ARM = 0x01C0
+Global Const $IMAGE_FILE_MACHINE_EBC = 0x0EBC
+Global Const $IMAGE_FILE_MACHINE_I386 = 0x014C
+Global Const $IMAGE_FILE_MACHINE_IA64 = 0x0200
+Global Const $IMAGE_FILE_MACHINE_M32R = 0x9041
+Global Const $IMAGE_FILE_MACHINE_MIPS16 = 0x0266
+Global Const $IMAGE_FILE_MACHINE_MIPSFPU = 0x0366
+Global Const $IMAGE_FILE_MACHINE_MIPSFPU16 = 0x0466
+Global Const $IMAGE_FILE_MACHINE_POWERPC = 0x01F0
+Global Const $IMAGE_FILE_MACHINE_POWERPCFP = 0x01F1
+Global Const $IMAGE_FILE_MACHINE_R4000 = 0x0166
+Global Const $IMAGE_FILE_MACHINE_SH3 = 0x01A2
+Global Const $IMAGE_FILE_MACHINE_SH3DSP = 0x01A3
+Global Const $IMAGE_FILE_MACHINE_SH4 = 0x01A6
+Global Const $IMAGE_FILE_MACHINE_SH5 = 0x01A8
+Global Const $IMAGE_FILE_MACHINE_THUMB = 0x01C2
+Global Const $IMAGE_FILE_MACHINE_WCEMIPSV2 = 0x0169
 
 ; ===============================================================================================================================
 ; _WinAPI_GetPriorityClass(), _WinAPI_SetPriorityClass()
@@ -2887,36 +3014,127 @@ Global Const $VK_OEM_CLEAR = 0xFE
 ; _WinAPI_LoadCursor()
 ; ===============================================================================================================================
 
-;Global Const $IDC_APPSTARTING = 32650
-;Global Const $IDC_HAND = 32649
 ;Global Const $IDC_ARROW = 32512
-;Global Const $IDC_CROSS = 32515
 ;Global Const $IDC_IBEAM = 32513
-;Global Const $IDC_ICON = 32641
-;Global Const $IDC_NO = 32648
-;Global Const $IDC_SIZE = 32640
-;Global Const $IDC_SIZEALL = 32646
-;Global Const $IDC_SIZENESW = 32643
-;Global Const $IDC_SIZENS = 32645
-;Global Const $IDC_SIZENWSE = 32642
-;Global Const $IDC_SIZEWE = 32644
-;Global Const $IDC_UPARROW = 32516
 ;Global Const $IDC_WAIT = 32514
+;Global Const $IDC_CROSS = 32515
+;Global Const $IDC_UPARROW = 32516
+;Global Const $IDC_SIZE = 32640
+;Global Const $IDC_ICON = 32641
+;Global Const $IDC_SIZENWSE = 32642
+;Global Const $IDC_SIZENESW = 32643
+;Global Const $IDC_SIZEWE = 32644
+;Global Const $IDC_SIZENS = 32645
+;Global Const $IDC_SIZEALL = 32646
+;Global Const $IDC_NO = 32648
+;Global Const $IDC_HAND = 32649
+;Global Const $IDC_APPSTARTING = 32650
+;Global Const $IDC_HELP = 32651
 
 ; ===============================================================================================================================
-; _WinAPI_LoadIconWithScaleDown()
+; _WinAPI_LoadIcon*()
 ; ===============================================================================================================================
 
 ;Global Const $IDI_APPLICATION = 32512
-;Global Const $IDI_ASTERISK = 32516
-;Global Const $IDI_EXCLAMATION = 32515
 ;Global Const $IDI_HAND = 32513
 ;Global Const $IDI_QUESTION = 32514
-Global Const $IDI_SHIELD = 32518
+;Global Const $IDI_EXCLAMATION = 32515
+;Global Const $IDI_ASTERISK = 32516
 ;Global Const $IDI_WINLOGO = 32517
+Global Const $IDI_SHIELD = 32518
 Global Const $IDI_ERROR = $IDI_HAND
 Global Const $IDI_INFORMATION = $IDI_ASTERISK
 Global Const $IDI_WARNING = $IDI_EXCLAMATION
+
+Global Const $LIM_SMALL = 0
+Global Const $LIM_LARGE = 1
+
+; ===============================================================================================================================
+; _WinAPI_LoadImage()
+; ===============================================================================================================================
+
+Global Const $OBM_TRTYPE = 32732
+Global Const $OBM_LFARROWI = 32734
+Global Const $OBM_RGARROWI = 32735
+Global Const $OBM_DNARROWI = 32736
+Global Const $OBM_UPARROWI = 32737
+Global Const $OBM_COMBO = 32738
+Global Const $OBM_MNARROW = 32739
+Global Const $OBM_LFARROWD = 32740
+Global Const $OBM_RGARROWD = 32741
+Global Const $OBM_DNARROWD = 32742
+Global Const $OBM_UPARROWD = 32743
+Global Const $OBM_RESTORED = 32744
+Global Const $OBM_ZOOMD = 32745
+Global Const $OBM_REDUCED = 32746
+Global Const $OBM_RESTORE = 32747
+Global Const $OBM_ZOOM = 32748
+Global Const $OBM_REDUCE = 32749
+Global Const $OBM_LFARROW = 32750
+Global Const $OBM_RGARROW = 32751
+Global Const $OBM_DNARROW = 32752
+Global Const $OBM_UPARROW = 32753
+Global Const $OBM_CLOSE = 32754
+Global Const $OBM_OLD_RESTORE = 32755
+Global Const $OBM_OLD_ZOOM = 32756
+Global Const $OBM_OLD_REDUCE = 32757
+Global Const $OBM_BTNCORNERS = 32758
+Global Const $OBM_CHECKBOXES = 32759
+Global Const $OBM_CHECK = 32760
+Global Const $OBM_BTSIZE = 32761
+Global Const $OBM_OLD_LFARROW = 32762
+Global Const $OBM_OLD_RGARROW = 32763
+Global Const $OBM_OLD_DNARROW = 32764
+Global Const $OBM_OLD_UPARROW = 32765
+Global Const $OBM_SIZE = 32766
+Global Const $OBM_OLD_CLOSE = 32767
+
+Global Const $OCR_NORMAL = 32512
+Global Const $OCR_IBEAM = 32513
+Global Const $OCR_WAIT = 32514
+Global Const $OCR_CROSS = 32515
+Global Const $OCR_UP = 32516
+Global Const $OCR_SIZE = 32640
+Global Const $OCR_ICON = 32641
+Global Const $OCR_SIZENWSE = 32642
+Global Const $OCR_SIZENESW = 32643
+Global Const $OCR_SIZEWE = 32644
+Global Const $OCR_SIZENS = 32645
+Global Const $OCR_SIZEALL = 32646
+Global Const $OCR_ICOCUR = 32647
+Global Const $OCR_NO = 32648
+Global Const $OCR_HAND = 32649
+Global Const $OCR_APPSTARTING = 32650
+Global Const $OCR_HELP = 32651
+
+Global Const $OIC_SAMPLE = 32512
+Global Const $OIC_HAND = 32513
+Global Const $OIC_QUES = 32514
+Global Const $OIC_BANG = 32515
+Global Const $OIC_NOTE = 32516
+Global Const $OIC_WINLOGO = 32517
+Global Const $OIC_WARNING = $OIC_BANG
+Global Const $OIC_ERROR = $OIC_HAND
+Global Const $OIC_INFORMATION = $OIC_NOTE
+
+;Global Const $IMAGE_BITMAP = 0
+;Global Const $IMAGE_ICON = 1
+;Global Const $IMAGE_CURSOR = 2
+Global Const $IMAGE_ENHMETAFILE = 3
+
+;Global Const $LR_DEFAULTCOLOR = 0x0000
+;Global Const $LR_MONOCHROME = 0x0001
+;Global Const $LR_COLOR = 0x0002
+;Global Const $LR_COPYRETURNORG = 0x0004
+;Global Const $LR_COPYDELETEORG = 0x0008
+;Global Const $LR_LOADFROMFILE = 0x0010
+;Global Const $LR_LOADTRANSPARENT = 0x0020
+;Global Const $LR_DEFAULTSIZE = 0x0040
+;Global Const $LR_VGA_COLOR = 0x0080
+;Global Const $LR_LOADMAP3DCOLORS = 0x1000
+;Global Const $LR_CREATEDIBSECTION = 0x2000
+;Global Const $LR_COPYFROMRESOURCE = 0x4000
+;Global Const $LR_SHARED = 0x8000
 
 ; ===============================================================================================================================
 ; _WinAPI_LoadLibraryEx()
@@ -2939,6 +3157,7 @@ Global Const $LOAD_LIBRARY_SEARCH_USER_DIRS = 0x00000400
 
 Global Const $MAPVK_VK_TO_CHAR = 2
 Global Const $MAPVK_VK_TO_VSC = 0
+Global Const $MAPVK_VK_TO_VSC_EX = 4
 Global Const $MAPVK_VSC_TO_VK = 1
 Global Const $MAPVK_VSC_TO_VK_EX = 3
 
@@ -2998,6 +3217,60 @@ Global Const $MB_SERVICE_NOTIFICATION = 0x00200000
 Global Const $MONITOR_DEFAULTTONEAREST = 0
 Global Const $MONITOR_DEFAULTTONULL = 1
 Global Const $MONITOR_DEFAULTTOPRIMARY = 2
+
+; ===============================================================================================================================
+; _WinAPI_OpenFileDlg(), _WinAPI_SaveFileDlg()
+; ===============================================================================================================================
+
+;Global Const $OFN_ALLOWMULTISELECT = 0x00000200
+;Global Const $OFN_CREATEPROMPT = 0x00002000
+;Global Const $OFN_DONTADDTORECENT = 0x02000000
+;Global Const $OFN_ENABLEHOOK = 0x00000020
+;Global Const $OFN_ENABLEINCLUDENOTIFY = 0x00400000
+;Global Const $OFN_ENABLESIZING = 0x00800000
+;Global Const $OFN_ENABLETEMPLATE = 0x00000040
+;Global Const $OFN_ENABLETEMPLATEHANDLE = 0x00000080
+;Global Const $OFN_EXPLORER = 0x00080000
+;Global Const $OFN_EXTENSIONDIFFERENT = 0x00000400
+;Global Const $OFN_FILEMUSTEXIST = 0x00001000
+;Global Const $OFN_FORCESHOWHIDDEN = 0x10000000
+;Global Const $OFN_HIDEREADONLY = 0x00000004
+;Global Const $OFN_LONGNAMES = 0x00200000
+;Global Const $OFN_NOCHANGEDIR = 0x00000008
+;Global Const $OFN_NODEREFERENCELINKS = 0x00100000
+;Global Const $OFN_NOLONGNAMES = 0x00040000
+;Global Const $OFN_NONETWORKBUTTON = 0x00020000
+;Global Const $OFN_NOREADONLYRETURN = 0x00008000
+;Global Const $OFN_NOTESTFILECREATE = 0x00010000
+;Global Const $OFN_NOVALIDATE = 0x00000100
+;Global Const $OFN_OVERWRITEPROMPT = 0x00000002
+;Global Const $OFN_PATHMUSTEXIST = 0x00000800
+;Global Const $OFN_READONLY = 0x00000001
+;Global Const $OFN_SHAREAWARE = 0x00004000
+;Global Const $OFN_SHOWHELP = 0x00000010
+
+;Global Const $OFN_EX_NOPLACESBAR = 0x00000001
+
+Global Const $CDM_FIRST = $WM_USER + 100
+Global Const $CDM_GETSPEC = $CDM_FIRST
+Global Const $CDM_GETFILEPATH = $CDM_FIRST + 1
+Global Const $CDM_GETFOLDERPATH = $CDM_FIRST + 2
+Global Const $CDM_GETFOLDERIDLIST = $CDM_FIRST + 3
+Global Const $CDM_SETCONTROLTEXT = $CDM_FIRST + 4
+Global Const $CDM_HIDECONTROL = $CDM_FIRST + 5
+Global Const $CDM_SETDEFEXT = $CDM_FIRST + 6
+Global Const $CDM_LAST = $WM_USER + 200
+
+Global Const $CDN_FIRST = -601
+Global Const $CDN_INITDONE = $CDN_FIRST
+Global Const $CDN_SELCHANGE = $CDN_FIRST - 1
+Global Const $CDN_FOLDERCHANGE = $CDN_FIRST - 2
+Global Const $CDN_SHAREVIOLATION = $CDN_FIRST - 3
+Global Const $CDN_HELP = $CDN_FIRST - 4
+Global Const $CDN_FILEOK = $CDN_FIRST - 5
+Global Const $CDN_TYPECHANGE = $CDN_FIRST - 6
+Global Const $CDN_INCLUDEITEM = $CDN_FIRST - 7
+Global Const $CDN_LAST = -699
 
 ; ===============================================================================================================================
 ; _WinAPI_OpenMutex()
@@ -3425,24 +3698,12 @@ Global Const $INPUTLANGCHANGE_FORWARD = 0x0002
 Global Const $INPUTLANGCHANGE_SYSCHARSET = 0x0001
 
 ; ===============================================================================================================================
-; _WinAPI_SetSystemCursor()
+; _WinAPI_SetSearchPathMode()
 ; ===============================================================================================================================
 
-Global Const $OCR_APPSTARTING = 32650
-Global Const $OCR_NORMAL = 32512
-Global Const $OCR_CROSS = 32515
-Global Const $OCR_HAND = 32649
-Global Const $OCR_IBEAM = 32513
-Global Const $OCR_NO = 32648
-Global Const $OCR_SIZEALL = 32646
-Global Const $OCR_SIZENESW = 32643
-Global Const $OCR_SIZENS = 32645
-Global Const $OCR_SIZENWSE = 32642
-Global Const $OCR_SIZEWE = 32644
-Global Const $OCR_UP = 32516
-Global Const $OCR_WAIT = 32514
-Global Const $OCR_ICON = 32641
-Global Const $OCR_SIZE = 32640
+Global Const $BASE_SEARCH_PATH_ENABLE_SAFE_SEARCHMODE = 0x00000001
+Global Const $BASE_SEARCH_PATH_DISABLE_SAFE_SEARCHMODE = 0x00010000
+Global Const $BASE_SEARCH_PATH_PERMANENT = 0x00008000
 
 ; ===============================================================================================================================
 ; _WinAPI_SetThreadExecutionState()
@@ -3569,8 +3830,30 @@ Global Const $SHERB_NOSOUND = 0x04
 Global Const $SHERB_NO_UI = BitOR($SHERB_NOCONFIRMATION, $SHERB_NOPROGRESSUI, $SHERB_NOSOUND)
 
 ; ===============================================================================================================================
-; _WinAPI_ShellExecute()
+; _WinAPI_ShellExecute(), _WinAPI_ShellExecuteEx()
 ; ===============================================================================================================================
+
+Global Const $SEE_MASK_DEFAULT = 0x00000000
+Global Const $SEE_MASK_CLASSNAME = 0x00000001
+Global Const $SEE_MASK_CLASSKEY = 0x00000003
+Global Const $SEE_MASK_IDLIST = 0x00000004
+Global Const $SEE_MASK_INVOKEIDLIST = 0x0000000C
+Global Const $SEE_MASK_ICON = 0x00000010
+Global Const $SEE_MASK_HOTKEY = 0x00000020
+Global Const $SEE_MASK_NOCLOSEPROCESS = 0x00000040
+Global Const $SEE_MASK_CONNECTNETDRV = 0x00000080
+Global Const $SEE_MASK_NOASYNC = 0x00000100
+Global Const $SEE_MASK_FLAG_DDEWAIT = $SEE_MASK_NOASYNC
+Global Const $SEE_MASK_DOENVSUBST = 0x00000200
+Global Const $SEE_MASK_FLAG_NO_UI = 0x00000400
+Global Const $SEE_MASK_UNICODE = 0x00004000
+Global Const $SEE_MASK_NO_CONSOLE = 0x00008000
+Global Const $SEE_MASK_ASYNCOK = 0x00100000
+Global Const $SEE_MASK_NOQUERYCLASSSTORE = 0x01000000
+Global Const $SEE_MASK_HMONITOR = 0x00200000
+Global Const $SEE_MASK_NOZONECHECKS = 0x00800000
+Global Const $SEE_MASK_WAITFORINPUTIDLE = 0x02000000
+Global Const $SEE_MASK_FLAG_LOG_USAGE = 0x04000000
 
 Global Const $SE_ERR_ACCESSDENIED = 5
 Global Const $SE_ERR_ASSOCINCOMPLETE = 27
@@ -3669,120 +3952,13 @@ Global Const $SFGAO_CONTENTSMASK = $SFGAO_HASSUBFOLDER
 Global Const $SFGAO_PKEYSFGAOMASK = BitOR($SFGAO_ISSLOW, $SFGAO_READONLY, $SFGAO_HASSUBFOLDER, $SFGAO_VALIDATE)
 
 ; ===============================================================================================================================
-; _WinAPI_ShellGetKnownFolderPath()
+; _WinAPI_ShellGetIconOverlayIndex()
 ; ===============================================================================================================================
 
-Global Const $FOLDERID_AddNewPrograms = '{DE61D971-5EBC-4F02-A3A9-6C82895E5C04}'
-Global Const $FOLDERID_AdminTools = '{724EF170-A42D-4FEF-9F26-B60E846FBA4F}'
-Global Const $FOLDERID_AppUpdates = '{A305CE99-F527-492B-8B1A-7E76FA98D6E4}'
-Global Const $FOLDERID_CDBurning = '{9E52AB10-F80D-49DF-ACB8-4330F5687855}'
-Global Const $FOLDERID_ChangeRemovePrograms = '{DF7266AC-9274-4867-8D55-3BD661DE872D}'
-Global Const $FOLDERID_CommonAdminTools = '{D0384E7D-BAC3-4797-8F14-CBA229B392B5}'
-Global Const $FOLDERID_CommonOEMLinks = '{C1BAE2D0-10DF-4334-BEDD-7AA20B227A9D}'
-Global Const $FOLDERID_CommonPrograms = '{0139D44E-6AFE-49F2-8690-3DAFCAE6FFB8}'
-Global Const $FOLDERID_CommonStartMenu = '{A4115719-D62E-491D-AA7C-E74B8BE3B067}'
-Global Const $FOLDERID_CommonStartup = '{82A5EA35-D9CD-47C5-9629-E15D2F714E6E}'
-Global Const $FOLDERID_CommonTemplates = '{B94237E7-57AC-4347-9151-B08C6C32D1F7}'
-Global Const $FOLDERID_ComputerFolder = '{0AC0837C-BBF8-452A-850D-79D08E667CA7}'
-Global Const $FOLDERID_ConflictFolder = '{4BFEFB45-347D-4006-A5BE-AC0CB0567192}'
-Global Const $FOLDERID_ConnectionsFolder = '{6F0CD92B-2E97-45D1-88FF-B0D186B8DEDD}'
-Global Const $FOLDERID_Contacts = '{56784854-C6CB-462B-8169-88E350ACB882}'
-Global Const $FOLDERID_ControlPanelFolder = '{82A74AEB-AEB4-465C-A014-D097EE346D63}'
-Global Const $FOLDERID_Cookies = '{2B0F765D-C0E9-4171-908E-08A611B84FF6}'
-Global Const $FOLDERID_Desktop = '{B4BFCC3A-DB2C-424C-B029-7FE99A87C641}'
-Global Const $FOLDERID_DeviceMetadataStore = '{5CE4A5E9-E4EB-479D-B89F-130C02886155}'
-Global Const $FOLDERID_DocumentsLibrary = '{7B0DB17D-9CD2-4A93-9733-46CC89022E7C}'
-Global Const $FOLDERID_Downloads = '{374DE290-123F-4565-9164-39C4925E467B}'
-Global Const $FOLDERID_Favorites = '{1777F761-68AD-4D8A-87BD-30B759FA33DD}'
-Global Const $FOLDERID_Fonts = '{FD228CB7-AE11-4AE3-864C-16F3910AB8FE}'
-Global Const $FOLDERID_Games = '{CAC52C1A-B53D-4EDC-92D7-6B2E8AC19434}'
-Global Const $FOLDERID_GameTasks = '{054FAE61-4DD8-4787-80B6-090220C4B700}'
-Global Const $FOLDERID_History = '{D9DC8A3B-B784-432E-A781-5A1130A75963}'
-Global Const $FOLDERID_HomeGroup = '{52528A6B-B9E3-4ADD-B60D-588C2DBA842D}'
-Global Const $FOLDERID_ImplicitAppShortcuts = '{BCB5256F-79F6-4CEE-B725-DC34E402FD46}'
-Global Const $FOLDERID_InternetCache = '{352481E8-33BE-4251-BA85-6007CAEDCF9D}'
-Global Const $FOLDERID_InternetFolder = '{4D9F7874-4E0C-4904-967B-40B0D20C3E4B}'
-Global Const $FOLDERID_Libraries = '{1B3EA5DC-B587-4786-B4EF-BD1DC332AEAE}'
-Global Const $FOLDERID_Links = '{BFB9D5E0-C6A9-404C-B2B2-AE6DB6AF4968}'
-Global Const $FOLDERID_LocalAppData = '{F1B32785-6FBA-4FCF-9D55-7B8E7F157091}'
-Global Const $FOLDERID_LocalAppDataLow = '{A520A1A4-1780-4FF6-BD18-167343C5AF16}'
-Global Const $FOLDERID_LocalizedResourcesDir = '{2A00375E-224C-49DE-B8D1-440DF7EF3DDC}'
-Global Const $FOLDERID_Music = '{4BD8D571-6D19-48D3-BE97-422220080E43}'
-Global Const $FOLDERID_MusicLibrary = '{2112AB0A-C86A-4FFE-A368-0DE96E47012E}'
-Global Const $FOLDERID_NetHood = '{C5ABBF53-E17F-4121-8900-86626FC2C973}'
-Global Const $FOLDERID_NetworkFolder = '{D20BEEC4-5CA8-4905-AE3B-BF251EA09B53}'
-Global Const $FOLDERID_OriginalImages = '{2C36C0AA-5812-4B87-BFD0-4CD0DFB19B39}'
-Global Const $FOLDERID_PhotoAlbums = '{69D2CF90-FC33-4FB7-9A0C-EBB0F0FCB43C}'
-Global Const $FOLDERID_PicturesLibrary = '{A990AE9F-A03B-4E80-94BC-9912D7504104}'
-Global Const $FOLDERID_Pictures = '{33E28130-4E1E-4676-835A-98395C3BC3BB}'
-Global Const $FOLDERID_Playlists = '{DE92C1C7-837F-4F69-A3BB-86E631204A23}'
-Global Const $FOLDERID_PrintersFolder = '{76FC4E2D-D6AD-4519-A663-37BD56068185}'
-Global Const $FOLDERID_PrintHood = '{9274BD8D-CFD1-41C3-B35E-B13F55A758F4}'
-Global Const $FOLDERID_Profile = '{5E6C858F-0E22-4760-9AFE-EA3317B67173}'
-Global Const $FOLDERID_ProgramData = '{62AB5D82-FDC1-4DC3-A9DD-070D1D495D97}'
-Global Const $FOLDERID_ProgramFiles = '{905E63B6-C1BF-494E-B29C-65B732D3D21A}'
-Global Const $FOLDERID_ProgramFilesX64 = '{6D809377-6AF0-444B-8957-A3773F02200E}'
-Global Const $FOLDERID_ProgramFilesX86 = '{7C5A40EF-A0FB-4BFC-874A-C0F2E0B9FA8E}'
-Global Const $FOLDERID_ProgramFilesCommon = '{F7F1ED05-9F6D-47A2-AAAE-29D317C6F066}'
-Global Const $FOLDERID_ProgramFilesCommonX64 = '{6365D5A7-0F0D-45E5-87F6-0DA56B6A4F7D}'
-Global Const $FOLDERID_ProgramFilesCommonX86 = '{DE974D24-D9C6-4D3E-BF91-F4455120B917}'
-Global Const $FOLDERID_Programs = '{A77F5D77-2E2B-44C3-A6A2-ABA601054A51}'
-Global Const $FOLDERID_Public = '{DFDF76A2-C82A-4D63-906A-5644AC457385}'
-Global Const $FOLDERID_PublicDesktop = '{C4AA340D-F20F-4863-AFEF-F87EF2E6BA25}'
-Global Const $FOLDERID_PublicDocuments = '{ED4824AF-DCE4-45A8-81E2-FC7965083634}'
-Global Const $FOLDERID_PublicDownloads = '{3D644C9B-1FB8-4F30-9B45-F670235F79C0}'
-Global Const $FOLDERID_PublicGameTasks = '{DEBF2536-E1A8-4C59-B6A2-414586476AEA}'
-Global Const $FOLDERID_PublicLibraries = '{48DAF80B-E6CF-4F4E-B800-0E69D84EE384}'
-Global Const $FOLDERID_PublicMusic = '{3214FAB5-9757-4298-BB61-92A9DEAA44FF}'
-Global Const $FOLDERID_PublicPictures = '{B6EBFB86-6907-413C-9AF7-4FC2ABF07CC5}'
-Global Const $FOLDERID_PublicRingtones = '{E555AB60-153B-4D17-9F04-A5FE99FC15EC}'
-Global Const $FOLDERID_PublicVideos = '{2400183A-6185-49FB-A2D8-4A392A602BA3}'
-Global Const $FOLDERID_QuickLaunch = '{52A4F021-7B75-48A9-9F6B-4B87A210BC8F}'
-Global Const $FOLDERID_Recent = '{AE50C081-EBD2-438A-8655-8A092E34987A}'
-Global Const $FOLDERID_RecordedTVLibrary = '{1A6FDBA2-F42D-4358-A798-B74D745926C5}'
-Global Const $FOLDERID_RecycleBinFolder = '{B7534046-3ECB-4C18-BE4E-64CD4CB7D6AC}'
-Global Const $FOLDERID_ResourceDir = '{8AD10C31-2ADB-4296-A8F7-E4701232C972}'
-Global Const $FOLDERID_Ringtones = '{C870044B-F49E-4126-A9C3-B52A1FF411E8}'
-Global Const $FOLDERID_RoamingAppData = '{3EB685DB-65F9-4CF6-A03A-E3EF65729F3D}'
-Global Const $FOLDERID_SampleMusic = '{B250C668-F57D-4EE1-A63C-290EE7D1AA1F}'
-Global Const $FOLDERID_SamplePictures = '{C4900540-2379-4C75-844B-64E6FAF8716B}'
-Global Const $FOLDERID_SamplePlaylists = '{15CA69B3-30EE-49C1-ACE1-6B5EC372AFB5}'
-Global Const $FOLDERID_SampleVideos = '{859EAD94-2E85-48AD-A71A-0969CB56A6CD}'
-Global Const $FOLDERID_SavedGames = '{4C5C32FF-BB9D-43B0-B5B4-2D72E54EAAA4}'
-Global Const $FOLDERID_SavedSearches = '{7D1D3A04-DEBB-4115-95CF-2F29DA2920DA}'
-Global Const $FOLDERID_SEARCH_CSC = '{EE32E446-31CA-4ABA-814F-A5EBD2FD6D5E}'
-Global Const $FOLDERID_SEARCH_MAPI = '{98EC0E18-2098-4D44-8644-66979315A281}'
-Global Const $FOLDERID_SearchHome = '{190337D1-B8CA-4121-A639-6D472D16972A}'
-Global Const $FOLDERID_SendTo = '{8983036C-27C0-404B-8F08-102D10DCFD74}'
-Global Const $FOLDERID_SidebarDefaultParts = '{7B396E54-9EC5-4300-BE0A-2482EBAE1A26}'
-Global Const $FOLDERID_SidebarParts = '{A75D362E-50FC-4FB7-AC2C-A8BEAA314493}'
-Global Const $FOLDERID_StartMenu = '{625B53C3-AB48-4EC1-BA1F-A1EF4146FC19}'
-Global Const $FOLDERID_Startup = '{B97D20BB-F46A-4C97-BA10-5E3608430854}'
-Global Const $FOLDERID_SyncManagerFolder = '{43668BF8-C14E-49B2-97C9-747784D784B7}'
-Global Const $FOLDERID_SyncResultsFolder = '{289A9A43-BE44-4057-A41B-587A76D7E7F9}'
-Global Const $FOLDERID_SyncSetupFolder = '{0F214138-B1D3-4A90-BBA9-27CBC0C5389A}'
-Global Const $FOLDERID_System = '{1AC14E77-02E7-4E5D-B744-2EB1AE5198B7}'
-Global Const $FOLDERID_SystemX86 = '{D65231B0-B2F1-4857-A4CE-A8E7C6EA7D27}'
-Global Const $FOLDERID_Templates = '{A63293E8-664E-48DB-A079-DF759E0509F7}'
-Global Const $FOLDERID_UserPinned = '{9E3995AB-1F9C-4F13-B827-48B24B6C7174}'
-Global Const $FOLDERID_UserProfiles = '{0762D272-C50A-4BB0-A382-697DCD729B80}'
-Global Const $FOLDERID_UserProgramFiles = '{5CD7AEE2-2219-4A67-B85D-6C9CE15660CB}'
-Global Const $FOLDERID_UserProgramFilesCommon = '{BCBD3057-CA5C-4622-B42D-BC56DB0AE516}'
-Global Const $FOLDERID_UsersFiles = '{F3CE0F7C-4901-4ACC-8648-D5D44B04EF8F}'
-Global Const $FOLDERID_UsersLibraries = '{A302545D-DEFF-464B-ABE8-61C8648D939B}'
-Global Const $FOLDERID_Videos = '{18989B1D-99B5-455B-841C-AB7C74E4DDFC}'
-Global Const $FOLDERID_VideosLibrary = '{491E922F-5643-4AF4-A7EB-4E7A138D8174}'
-Global Const $FOLDERID_Windows = '{F38BF404-1D43-42F2-9305-67DE0B28FC23}'
-
-Global Const $KF_FLAG_ALIAS_ONLY = 0x80000000
-Global Const $KF_FLAG_CREATE = 0x00008000
-Global Const $KF_FLAG_DONT_VERIFY = 0x00004000
-Global Const $KF_FLAG_DONT_UNEXPAND = 0x00002000
-Global Const $KF_FLAG_NO_ALIAS = 0x00001000
-Global Const $KF_FLAG_INIT = 0x00000800
-Global Const $KF_FLAG_DEFAULT_PATH = 0x00000400
-Global Const $KF_FLAG_NOT_PARENT_RELATIVE = 0x00000200
-Global Const $KF_FLAG_SIMPLE_IDLIST = 0x00000100
+Global Const $IDO_SHGIOI_DEFAULT = 0x0FFFFFFC
+Global Const $IDO_SHGIOI_LINK = 0x0FFFFFFE
+Global Const $IDO_SHGIOI_SHARE = 0x0FFFFFFF
+Global Const $IDO_SHGIOI_SLOWFILE = 0x0FFFFFFD
 
 ; ===============================================================================================================================
 ; _WinAPI_ShellGetSetFolderCustomSettings()
@@ -4243,6 +4419,18 @@ Global Const $REST_USEDESKTOPINICACHE = 171
 ;Global Const $RESOURCETYPE_PRINT = 0x02
 
 ; ===============================================================================================================================
+; _WinAPI_ShellUpdateImage()
+; ===============================================================================================================================
+
+Global Const $GIL_DONTCACHE = 0x0010
+Global Const $GIL_NOTFILENAME = 0x0008
+Global Const $GIL_PERCLASS = 0x0004
+Global Const $GIL_PERINSTANCE = 0x0002
+Global Const $GIL_SIMULATEDOC = 0x0001
+Global Const $GIL_SHIELD = 0x0200
+Global Const $GIL_FORCENOSHIELD = 0x0400
+
+; ===============================================================================================================================
 ; _WinAPI_ShellUserAuthenticationDlg()
 ; ===============================================================================================================================
 
@@ -4281,6 +4469,123 @@ Global Const $CREDUIWIN_PREPROMPTING = 0x00002000
 ;Global Const $CRED_PACK_GENERIC_CREDENTIALS = 0x04
 ;Global Const $CRED_PACK_PROTECTED_CREDENTIALS = 0x01
 ;Global Const $CRED_PACK_WOW_BUFFER = 0x02
+
+; ===============================================================================================================================
+; _WinAPI_Shell*KnownFolder*()
+; ===============================================================================================================================
+
+Global Const $FOLDERID_AddNewPrograms = '{DE61D971-5EBC-4F02-A3A9-6C82895E5C04}'
+Global Const $FOLDERID_AdminTools = '{724EF170-A42D-4FEF-9F26-B60E846FBA4F}'
+Global Const $FOLDERID_AppUpdates = '{A305CE99-F527-492B-8B1A-7E76FA98D6E4}'
+Global Const $FOLDERID_CDBurning = '{9E52AB10-F80D-49DF-ACB8-4330F5687855}'
+Global Const $FOLDERID_ChangeRemovePrograms = '{DF7266AC-9274-4867-8D55-3BD661DE872D}'
+Global Const $FOLDERID_CommonAdminTools = '{D0384E7D-BAC3-4797-8F14-CBA229B392B5}'
+Global Const $FOLDERID_CommonOEMLinks = '{C1BAE2D0-10DF-4334-BEDD-7AA20B227A9D}'
+Global Const $FOLDERID_CommonPrograms = '{0139D44E-6AFE-49F2-8690-3DAFCAE6FFB8}'
+Global Const $FOLDERID_CommonStartMenu = '{A4115719-D62E-491D-AA7C-E74B8BE3B067}'
+Global Const $FOLDERID_CommonStartup = '{82A5EA35-D9CD-47C5-9629-E15D2F714E6E}'
+Global Const $FOLDERID_CommonTemplates = '{B94237E7-57AC-4347-9151-B08C6C32D1F7}'
+Global Const $FOLDERID_ComputerFolder = '{0AC0837C-BBF8-452A-850D-79D08E667CA7}'
+Global Const $FOLDERID_ConflictFolder = '{4BFEFB45-347D-4006-A5BE-AC0CB0567192}'
+Global Const $FOLDERID_ConnectionsFolder = '{6F0CD92B-2E97-45D1-88FF-B0D186B8DEDD}'
+Global Const $FOLDERID_Contacts = '{56784854-C6CB-462B-8169-88E350ACB882}'
+Global Const $FOLDERID_ControlPanelFolder = '{82A74AEB-AEB4-465C-A014-D097EE346D63}'
+Global Const $FOLDERID_Cookies = '{2B0F765D-C0E9-4171-908E-08A611B84FF6}'
+Global Const $FOLDERID_Desktop = '{B4BFCC3A-DB2C-424C-B029-7FE99A87C641}'
+Global Const $FOLDERID_DeviceMetadataStore = '{5CE4A5E9-E4EB-479D-B89F-130C02886155}'
+Global Const $FOLDERID_DocumentsLibrary = '{7B0DB17D-9CD2-4A93-9733-46CC89022E7C}'
+Global Const $FOLDERID_Downloads = '{374DE290-123F-4565-9164-39C4925E467B}'
+Global Const $FOLDERID_Favorites = '{1777F761-68AD-4D8A-87BD-30B759FA33DD}'
+Global Const $FOLDERID_Fonts = '{FD228CB7-AE11-4AE3-864C-16F3910AB8FE}'
+Global Const $FOLDERID_Games = '{CAC52C1A-B53D-4EDC-92D7-6B2E8AC19434}'
+Global Const $FOLDERID_GameTasks = '{054FAE61-4DD8-4787-80B6-090220C4B700}'
+Global Const $FOLDERID_History = '{D9DC8A3B-B784-432E-A781-5A1130A75963}'
+Global Const $FOLDERID_HomeGroup = '{52528A6B-B9E3-4ADD-B60D-588C2DBA842D}'
+Global Const $FOLDERID_ImplicitAppShortcuts = '{BCB5256F-79F6-4CEE-B725-DC34E402FD46}'
+Global Const $FOLDERID_InternetCache = '{352481E8-33BE-4251-BA85-6007CAEDCF9D}'
+Global Const $FOLDERID_InternetFolder = '{4D9F7874-4E0C-4904-967B-40B0D20C3E4B}'
+Global Const $FOLDERID_Libraries = '{1B3EA5DC-B587-4786-B4EF-BD1DC332AEAE}'
+Global Const $FOLDERID_Links = '{BFB9D5E0-C6A9-404C-B2B2-AE6DB6AF4968}'
+Global Const $FOLDERID_LocalAppData = '{F1B32785-6FBA-4FCF-9D55-7B8E7F157091}'
+Global Const $FOLDERID_LocalAppDataLow = '{A520A1A4-1780-4FF6-BD18-167343C5AF16}'
+Global Const $FOLDERID_LocalizedResourcesDir = '{2A00375E-224C-49DE-B8D1-440DF7EF3DDC}'
+Global Const $FOLDERID_Music = '{4BD8D571-6D19-48D3-BE97-422220080E43}'
+Global Const $FOLDERID_MusicLibrary = '{2112AB0A-C86A-4FFE-A368-0DE96E47012E}'
+Global Const $FOLDERID_NetHood = '{C5ABBF53-E17F-4121-8900-86626FC2C973}'
+Global Const $FOLDERID_NetworkFolder = '{D20BEEC4-5CA8-4905-AE3B-BF251EA09B53}'
+Global Const $FOLDERID_OriginalImages = '{2C36C0AA-5812-4B87-BFD0-4CD0DFB19B39}'
+Global Const $FOLDERID_PhotoAlbums = '{69D2CF90-FC33-4FB7-9A0C-EBB0F0FCB43C}'
+Global Const $FOLDERID_PicturesLibrary = '{A990AE9F-A03B-4E80-94BC-9912D7504104}'
+Global Const $FOLDERID_Pictures = '{33E28130-4E1E-4676-835A-98395C3BC3BB}'
+Global Const $FOLDERID_Playlists = '{DE92C1C7-837F-4F69-A3BB-86E631204A23}'
+Global Const $FOLDERID_PrintersFolder = '{76FC4E2D-D6AD-4519-A663-37BD56068185}'
+Global Const $FOLDERID_PrintHood = '{9274BD8D-CFD1-41C3-B35E-B13F55A758F4}'
+Global Const $FOLDERID_Profile = '{5E6C858F-0E22-4760-9AFE-EA3317B67173}'
+Global Const $FOLDERID_ProgramData = '{62AB5D82-FDC1-4DC3-A9DD-070D1D495D97}'
+Global Const $FOLDERID_ProgramFiles = '{905E63B6-C1BF-494E-B29C-65B732D3D21A}'
+Global Const $FOLDERID_ProgramFilesX64 = '{6D809377-6AF0-444B-8957-A3773F02200E}'
+Global Const $FOLDERID_ProgramFilesX86 = '{7C5A40EF-A0FB-4BFC-874A-C0F2E0B9FA8E}'
+Global Const $FOLDERID_ProgramFilesCommon = '{F7F1ED05-9F6D-47A2-AAAE-29D317C6F066}'
+Global Const $FOLDERID_ProgramFilesCommonX64 = '{6365D5A7-0F0D-45E5-87F6-0DA56B6A4F7D}'
+Global Const $FOLDERID_ProgramFilesCommonX86 = '{DE974D24-D9C6-4D3E-BF91-F4455120B917}'
+Global Const $FOLDERID_Programs = '{A77F5D77-2E2B-44C3-A6A2-ABA601054A51}'
+Global Const $FOLDERID_Public = '{DFDF76A2-C82A-4D63-906A-5644AC457385}'
+Global Const $FOLDERID_PublicDesktop = '{C4AA340D-F20F-4863-AFEF-F87EF2E6BA25}'
+Global Const $FOLDERID_PublicDocuments = '{ED4824AF-DCE4-45A8-81E2-FC7965083634}'
+Global Const $FOLDERID_PublicDownloads = '{3D644C9B-1FB8-4F30-9B45-F670235F79C0}'
+Global Const $FOLDERID_PublicGameTasks = '{DEBF2536-E1A8-4C59-B6A2-414586476AEA}'
+Global Const $FOLDERID_PublicLibraries = '{48DAF80B-E6CF-4F4E-B800-0E69D84EE384}'
+Global Const $FOLDERID_PublicMusic = '{3214FAB5-9757-4298-BB61-92A9DEAA44FF}'
+Global Const $FOLDERID_PublicPictures = '{B6EBFB86-6907-413C-9AF7-4FC2ABF07CC5}'
+Global Const $FOLDERID_PublicRingtones = '{E555AB60-153B-4D17-9F04-A5FE99FC15EC}'
+Global Const $FOLDERID_PublicVideos = '{2400183A-6185-49FB-A2D8-4A392A602BA3}'
+Global Const $FOLDERID_QuickLaunch = '{52A4F021-7B75-48A9-9F6B-4B87A210BC8F}'
+Global Const $FOLDERID_Recent = '{AE50C081-EBD2-438A-8655-8A092E34987A}'
+Global Const $FOLDERID_RecordedTVLibrary = '{1A6FDBA2-F42D-4358-A798-B74D745926C5}'
+Global Const $FOLDERID_RecycleBinFolder = '{B7534046-3ECB-4C18-BE4E-64CD4CB7D6AC}'
+Global Const $FOLDERID_ResourceDir = '{8AD10C31-2ADB-4296-A8F7-E4701232C972}'
+Global Const $FOLDERID_Ringtones = '{C870044B-F49E-4126-A9C3-B52A1FF411E8}'
+Global Const $FOLDERID_RoamingAppData = '{3EB685DB-65F9-4CF6-A03A-E3EF65729F3D}'
+Global Const $FOLDERID_SampleMusic = '{B250C668-F57D-4EE1-A63C-290EE7D1AA1F}'
+Global Const $FOLDERID_SamplePictures = '{C4900540-2379-4C75-844B-64E6FAF8716B}'
+Global Const $FOLDERID_SamplePlaylists = '{15CA69B3-30EE-49C1-ACE1-6B5EC372AFB5}'
+Global Const $FOLDERID_SampleVideos = '{859EAD94-2E85-48AD-A71A-0969CB56A6CD}'
+Global Const $FOLDERID_SavedGames = '{4C5C32FF-BB9D-43B0-B5B4-2D72E54EAAA4}'
+Global Const $FOLDERID_SavedSearches = '{7D1D3A04-DEBB-4115-95CF-2F29DA2920DA}'
+Global Const $FOLDERID_SEARCH_CSC = '{EE32E446-31CA-4ABA-814F-A5EBD2FD6D5E}'
+Global Const $FOLDERID_SEARCH_MAPI = '{98EC0E18-2098-4D44-8644-66979315A281}'
+Global Const $FOLDERID_SearchHome = '{190337D1-B8CA-4121-A639-6D472D16972A}'
+Global Const $FOLDERID_SendTo = '{8983036C-27C0-404B-8F08-102D10DCFD74}'
+Global Const $FOLDERID_SidebarDefaultParts = '{7B396E54-9EC5-4300-BE0A-2482EBAE1A26}'
+Global Const $FOLDERID_SidebarParts = '{A75D362E-50FC-4FB7-AC2C-A8BEAA314493}'
+Global Const $FOLDERID_StartMenu = '{625B53C3-AB48-4EC1-BA1F-A1EF4146FC19}'
+Global Const $FOLDERID_Startup = '{B97D20BB-F46A-4C97-BA10-5E3608430854}'
+Global Const $FOLDERID_SyncManagerFolder = '{43668BF8-C14E-49B2-97C9-747784D784B7}'
+Global Const $FOLDERID_SyncResultsFolder = '{289A9A43-BE44-4057-A41B-587A76D7E7F9}'
+Global Const $FOLDERID_SyncSetupFolder = '{0F214138-B1D3-4A90-BBA9-27CBC0C5389A}'
+Global Const $FOLDERID_System = '{1AC14E77-02E7-4E5D-B744-2EB1AE5198B7}'
+Global Const $FOLDERID_SystemX86 = '{D65231B0-B2F1-4857-A4CE-A8E7C6EA7D27}'
+Global Const $FOLDERID_Templates = '{A63293E8-664E-48DB-A079-DF759E0509F7}'
+Global Const $FOLDERID_UserPinned = '{9E3995AB-1F9C-4F13-B827-48B24B6C7174}'
+Global Const $FOLDERID_UserProfiles = '{0762D272-C50A-4BB0-A382-697DCD729B80}'
+Global Const $FOLDERID_UserProgramFiles = '{5CD7AEE2-2219-4A67-B85D-6C9CE15660CB}'
+Global Const $FOLDERID_UserProgramFilesCommon = '{BCBD3057-CA5C-4622-B42D-BC56DB0AE516}'
+Global Const $FOLDERID_UsersFiles = '{F3CE0F7C-4901-4ACC-8648-D5D44B04EF8F}'
+Global Const $FOLDERID_UsersLibraries = '{A302545D-DEFF-464B-ABE8-61C8648D939B}'
+Global Const $FOLDERID_Videos = '{18989B1D-99B5-455B-841C-AB7C74E4DDFC}'
+Global Const $FOLDERID_VideosLibrary = '{491E922F-5643-4AF4-A7EB-4E7A138D8174}'
+Global Const $FOLDERID_Windows = '{F38BF404-1D43-42F2-9305-67DE0B28FC23}'
+
+Global Const $KF_FLAG_ALIAS_ONLY = 0x80000000
+Global Const $KF_FLAG_CREATE = 0x00008000
+Global Const $KF_FLAG_DONT_VERIFY = 0x00004000
+Global Const $KF_FLAG_DONT_UNEXPAND = 0x00002000
+Global Const $KF_FLAG_NO_ALIAS = 0x00001000
+Global Const $KF_FLAG_INIT = 0x00000800
+Global Const $KF_FLAG_DEFAULT_PATH = 0x00000400
+Global Const $KF_FLAG_NO_APPCONTAINER_REDIRECTION = 0x00010000
+Global Const $KF_FLAG_NOT_PARENT_RELATIVE = 0x00000200
+Global Const $KF_FLAG_SIMPLE_IDLIST = 0x00000100
 
 ; ===============================================================================================================================
 ; _WinAPI_SystemParametersInfo()
@@ -4483,11 +4788,21 @@ Global Const $TME_QUERY = 0x40000000
 ; _WinAPI_UniqueHardwareID()
 ; ===============================================================================================================================
 
-Global Const $UHID_MB = 0x0000
-Global Const $UHID_BIOS = 0x0001
-Global Const $UHID_CPU = 0x0002
-Global Const $UHID_HDD = 0x0004
+Global Const $UHID_MB = 0x00
+Global Const $UHID_BIOS = 0x01
+Global Const $UHID_CPU = 0x02
+Global Const $UHID_HDD = 0x04
 Global Const $UHID_All = BitOR($UHID_MB, $UHID_BIOS, $UHID_CPU, $UHID_HDD)
+
+; ===============================================================================================================================
+; _WinAPI_UpdateLayeredWindow*()
+; ===============================================================================================================================
+
+;Global Const $ULW_ALPHA = 0x02
+;Global Const $ULW_COLORKEY = 0x01
+;Global Const $ULW_OPAQUE = 0x04
+
+Global Const $ULW_EX_NORESIZE = 0x08
 
 ; ===============================================================================================================================
 ; _WinAPI_UrlApplyScheme()
@@ -4586,6 +4901,21 @@ Global Const $VFT2_FONT_RASTER = 0x00000001
 Global Const $VFT2_FONT_TRUETYPE = 0x00000003
 Global Const $VFT2_FONT_VECTOR = 0x00000002
 ;Global Const $VFT2_UNKNOWN = 0x00000000
+
+; ===============================================================================================================================
+; _WinAPI_*Desktop*()
+; ===============================================================================================================================
+
+Global Const $DESKTOP_CREATEMENU = 0x0004
+Global Const $DESKTOP_CREATEWINDOW = 0x0002
+Global Const $DESKTOP_ENUMERATE = 0x0040
+Global Const $DESKTOP_HOOKCONTROL = 0x0008
+Global Const $DESKTOP_JOURNALPLAYBACK = 0x0020
+Global Const $DESKTOP_JOURNALRECORD = 0x0010
+Global Const $DESKTOP_READOBJECTS = 0x0001
+Global Const $DESKTOP_SWITCHDESKTOP = 0x0100
+Global Const $DESKTOP_WRITEOBJECTS = 0x0080
+Global Const $DESKTOP_ALL_ACCESS = BitOR($DESKTOP_CREATEMENU, $DESKTOP_CREATEWINDOW, $DESKTOP_ENUMERATE, $DESKTOP_HOOKCONTROL, $DESKTOP_JOURNALPLAYBACK, $DESKTOP_JOURNALRECORD, $DESKTOP_READOBJECTS, $DESKTOP_SWITCHDESKTOP, $DESKTOP_WRITEOBJECTS)
 
 ; ===============================================================================================================================
 ; _WinAPI_*Rgn*()

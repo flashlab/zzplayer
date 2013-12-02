@@ -25,12 +25,13 @@
 #include <Timers.au3>
 #include "BassConstants.au3"
 #include "Bass.au3"
+#include "ShellContextMenu.au3"
 
 Global $hGUI, $hReBar, $hToolbar, $Tbar, $TbarMenu, $LyrMenu, $ListMenu, $SubMenu, $SubMenu2, $Lrc_Choose, $Setting, $hGIF, $dGUI, $ID3_lst, $ID3_dial, $ID3_btn, $hIcons[19]
 Global Enum $idAdd = 1000, $idOpen, $idAbt, $idSet, $idSav, $idDat, $idLst
-Global $iItem, $iSelected = -1, $old_name, $pre_name='', $lyr_select[1] = [0], $fDblClk = 0, $Changed = -1, $_Free = 0, $show_lyric = True, $drop_DIR = False
+Global $iItem, $iSelected = -1, $old_name, $pre_name='', $lyr_select[1] = [0], $fDblClk = 0, $Changed = -1, $_Free = 0, $show_lyric = True, $drop_DIR = False, $shell_item=True
 Global Enum $qqjt = 2000, $kwyy, $mngc, $bdyy, $ilrc, $qqyy, $tq, $tq1, $tq2, $yh, $yh1, $yh2, $sc, $cr,$hd,$save_as_lrc,$save_as_srt
-Global Enum $copy_item = 3000, $rn_item, $copy_qq_item, $rm_item, $edit_item, $reload_item, $id3_item, $del_id3_item, $copy_lyr_item, $load_cover, $shell_item
+Global Enum $copy_item = 3000, $rn_item, $copy_qq_item, $rm_item, $edit_item, $reload_item, $id3_item, $del_id3_item, $copy_lyr_item, $load_cover
 Global $hToolBar_image[7], $hToolBar_strings[7], $Fonts[6], $Top_set, $layOut1, $layOut2, $layOut0, $Fade_set, $FadeOut=25, $Slider1,$cnc, $Ping
 Global $StatusBar, $StatusBar_PartsWidth[5] = [24, 190, 533, 750, -1], $NetState[6], $L_process, $OldParam=-1
 Global $Sound_Play, $Sound_Stop, $Sound_Flag, $s_flag=False, $MusicHandle, $Data_Count=0, $mode = -1
@@ -76,7 +77,7 @@ Global Const $PBM_SETMARQUEE = 0X400 + 10
 ;~ Global Const $IMAGE_BITMAP = 0
 Global Const $STM_SETIMAGE = 0x0172
 Global $about = '此工具仅供学习使用，请勿作商业用途' & _
-		@LF & '杀毒软件可能会报毒，请自行斟酌' & @LF & '保存歌词时请确保选中项与需要的文件名相同' & @LF & '进度条滚动时请尽量减少操作' & @LF & _
+		@LF & '杀毒软件可能会报毒，请自行斟酌' & @LF & 'bug较多，重要文件请备份或慎用' & @LF & '进度条滚动时请尽量减少操作' & @LF & _
 		'有更多建议请联系zhengjuefei25@gmail.com'
 Global Const $_tagCHOOSEFONT = "dword Size;hwnd hWndOwner;handle hDC;ptr LogFont;int PointSize;dword Flags;dword rgbColors;lparam CustData;" & _
 		"ptr fnHook;ptr TemplateName;handle hInstance;ptr szStyle;word FontType;int nSizeMin;int nSizeMax"
@@ -143,29 +144,8 @@ Global $only_file_without_lrc=Number(IniRead(@ScriptDir&'\config.ini', "others",
 Global $root_folder=IniRead(@ScriptDir&'\config.ini', "others", "work_dir", "")
 Global $GUI_color=Number(IniRead(@ScriptDir&'\config.ini', "others", "color", "1"))
 
-Global $__RegAsmPath, $ShellContextMenu
+Global $__RegAsmPath
 
-Func _NETFramework_Load($DLL_File, $flag)
-    If Not FileExists($DLL_File) Then Return SetError(2,0,0) ; == file does not exist
-    Local $sRoot = RegRead("HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\.NETFramework", "InstallRoot")
-    If @error Then Return SetError(3,0,0) ; == NET Framework 2.0 required!
-    Local $aFolder = _FileListToArray($sRoot , "*", 2), $sNETFolder = ''
-    For $i = $aFolder[0] To 1 Step -1
-        If StringRegExp($aFolder[$i], "v2\.0\.\d+", 0) Then
-            $sNETFolder = $aFolder[$i]
-            ExitLoop
-        EndIf
-    Next
-    If $sNETFolder = '' Then Return SetError(3,0,0) ; == NET Framework 2.0 required!
-    $__RegAsmPath = $sRoot & $sNETFolder & "\RegAsm.exe"
-	If Not ShellExecuteWait($__RegAsmPath, _Iif($flag, "/codebase ", "/u ") & $DLL_File, @ScriptDir, "runas", @SW_HIDE) Then Return SetError(4,0,0)
-;~ 	If Not RunWait($__RegAsmPath & _Iif($flag, " /codebase ", " /u ") & $DLL_File, @ScriptDir, @SW_HIDE) Then Return SetError(4,0,0); register the .net DLL
-    Return 1
-EndFunc  ;==>_NETFramework_Load
-
-Func __UnLoad_NET_Dll($DLL_File)
-    RunWait($__RegAsmPath & " /unregister " & $DLL_File, @ScriptDir, @SW_HIDE) ; unregister the .net DLL
-EndFunc
 
 Func MyErrFunc()
 	If Not $hGUI Then Return

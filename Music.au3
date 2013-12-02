@@ -4,7 +4,7 @@
 #AutoIt3Wrapper_Res_FileVersion=2.0.0.0
 #AutoIt3Wrapper_Run_Tidy=y
 #Autoit3Wrapper_Run_Obfuscator=y
-#Obfuscator_Parameters= /SO /OM
+#Obfuscator_Parameters= /SF /SV /OM
 #Obfuscator_On
 #endregion ;**** 参数创建于 ACNWrapper_GUI ****
 ;ver 0.0.0.4
@@ -51,7 +51,6 @@ Global $Font1 = _WinAPI_CreateFont(14, 0, 0, 0, $FW_BOLD)
 ;~ Global $Dll_ = DllOpen(@ScriptDir & "\USkin.dll")
 ;~ DllCall($Dll_, "int", "USkinInit", "str", "Null", "str", "NULL", "str", $skins)  ;loading skin dll.
 ;~ DllCall($Dll_, "int", "USkinLoadSkin", "str", $skins) ;  initialize skin
-$ShellContextMenu = ObjCreate("ExplorerShellContextMenu.ShowContextMenu")
 ;~ tray begin
 TraySetIcon(@ScriptDir & '\icon.dll', 14)
 $play_control = TrayCreateMenu("播放控制")
@@ -71,6 +70,8 @@ EndFunc   ;==>SpecialEvent
 ;~ tray end
 
 $hGUI = GUICreate("音乐管理器 v2.0", 781, 562, -1, -1, 0x94CE0000, 0x00000010)
+$hNewWinProc = DllCallbackRegister("NewWindowProc", "int", "hwnd;uint;wparam;lparam")
+;~ $hOldWinProc = _WinAPI_SetWindowLong($hGUI, $GWL_WNDPROC, DllCallbackGetPtr($hNewWinProc))
 $col_def = GUIGetBkColor($hGUI)
 GUISetOnEvent($GUI_EVENT_CLOSE, "gui")
 GUISetOnEvent($GUI_EVENT_RESTORE, "gui")
@@ -241,6 +242,9 @@ GUISwitch($hGUI)
 guicolor($GUI_color)
 GUISetState(@SW_SHOW, $hGUI)
 
+;~ $cNewWinProc = DllCallbackRegister("NewWindowProc", "int", "hwnd;uint;wparam;lparam")
+;~ $cOldWinProc = _WinAPI_SetWindowLong($hGUI, $GWL_WNDPROC, DllCallbackGetPtr($cNewWinProc))
+
 GUIRegisterMsg($WM_NOTIFY, "_WM_NOTIFY")
 GUIRegisterMsg($WM_COMMAND, "MY_WM_COMMAND")
 GUIRegisterMsg(0x233, "WM_DROPFILES") ;WM_DROPFILES
@@ -282,7 +286,7 @@ _GUICtrlMenuEx_AddMenuItem($SubMenu, "放入回收站", $rm_item, $hIcons[16])
 _GUICtrlMenuEx_AddMenuBar($SubMenu)
 _GUICtrlMenuEx_AddMenuItem($SubMenu, "ID3标签", 0, $hIcons[1], $SubsubMenu1)
 _GUICtrlMenuEx_AddMenuItem($SubMenu, "内嵌歌词", 0, $hIcons[7], $SubsubMenu2)
-If IsObj($ShellContextMenu) Then _GUICtrlMenuEx_AddMenuItem($SubMenu, "more... ", $shell_item, $hIcons[14])
+;~ _GUICtrlMenuEx_AddMenuItem($SubMenu, "more... ", $shell_item, $hIcons[14])
 
 $SubMenu2 = _GUICtrlMenu_CreatePopup()
 _GUICtrlMenuEx_AddMenuItem($SubMenu2, "提前200毫秒", $tq, $hIcons[14])
@@ -914,15 +918,11 @@ Func set()
 				$only_file_without_lrc = 1
 			EndIf
 		Case $shell_bt
-			If IsObj($ShellContextMenu) Then
-				_GUICtrlMenuEx_DeleteMenu($SubMenu, 9)
-				$ShellContextMenu = ""
-				_NETFramework_Load(@ScriptDir & "\ExplorerShellContextMenu.dll", False)
+			If $shell_item Then
+				$shell_item = False
 				GUICtrlSetData($shell_bt, "安装右键增强")
 			Else
-				_NETFramework_Load(@ScriptDir & "\ExplorerShellContextMenu.dll", True)
-				_GUICtrlMenuEx_AddMenuItem($SubMenu, "more... ", $shell_item, $hIcons[14])
-				$ShellContextMenu = ObjCreate("ExplorerShellContextMenu.ShowContextMenu")
+				$shell_item = True
 				GUICtrlSetData($shell_bt, "卸载右键增强")
 			EndIf
 	EndSwitch
@@ -1175,7 +1175,7 @@ Func _Setting_Gui() ;----------设置---------------
 	$SubSel_Deep = GUICtrlCreateInput($dir_depth, 24, 160, 30, 17)
 	$SubSel_Deep_Up = GUICtrlCreateUpdown($SubSel_Deep)
 	GUICtrlSetLimit($SubSel_Deep_Up, 9, 1)
-	$shell_bt = GUICtrlCreateButton(_Iif(IsObj($ShellContextMenu), "卸载右键增强", "安装右键增强(需写入注册表)"), 24, 182, 185, 23)
+	$shell_bt = GUICtrlCreateButton(_Iif($shell_item, "卸载右键增强", "安装右键增强(需写入注册表)"), 24, 182, 185, 23)
 	GUICtrlSetOnEvent(-1, "set")
 	_GUICtrlButton_SetShield(GUICtrlGetHandle($shell_bt))
 	GUICtrlCreateTabItem("")
@@ -1544,11 +1544,6 @@ Func _ListMenu_Click()
 			EndIf
 		Case $rn_item
 			_GUICtrlListView_EditLabel($hListView, $iSelected)
-		Case $shell_item
-			Local $asCurInfo = GUIGetCursorInfo($hGUI)
-			If @error Then Dim $asCurInfo[2] = [0, 0]
-			ClientToScreen($hGUI, $asCurInfo[0], $asCurInfo[1])
-			$ShellContextMenu.Show($sel_dir, $asCurInfo[0], $asCurInfo[1])
 		Case $rm_item
 			_ToolTip('提示', _Iif(FileRecycle($sel_dir), '文件已放入回收站', '删除未成功'), 3, 1)
 			If Not FileExists($sel_dir) Then
@@ -1973,6 +1968,8 @@ Func _exit()
 ;~ 	DllCall($Dll_, "int", "USkinRemoveSkin") ;这里是关闭皮肤
 ;~ 	DllCall($Dll_, "int", "USkinExit") ;这里是退出皮肤调用的DLL
 ;~ 	DllClose($Dll_) ;关闭DLL文件调用
+;~ 	MsgBox(0, '', 'Exit')
+	CloseDlls()
 	_ReleaseIDropSource($objIDropSource)
 	_OLEUnInitialize() ;drag/drop dll release
 	_IUnknown_Release($IDragSourceHelper)
@@ -1980,8 +1977,8 @@ Func _exit()
 	_Bass_Free()
 	$_Free = 1
 	_ID3DeleteFiles()
-;~ 	MsgBox(0, '', 'Exit')
 ;~	GUIDelete()
+    DllCallbackFree($hNewWinProc)
 	Exit
 EndFunc   ;==>_exit
 
@@ -2114,7 +2111,12 @@ Func _WM_NOTIFY($hWndGUI, $MsgID, $WParam, $LParam)
 						_GUICtrlMenu_SetItemEnabled($SubMenu, 0)
 						_GUICtrlMenu_SetItemEnabled($SubMenu, 5)
 					EndIf
-					Return _GUICtrlMenu_TrackPopupMenu($SubMenu, $hGUI)
+					If Not $shell_item Then
+						Local $iCmd = _GUICtrlMenu_TrackPopupMenu($SubMenu, $hGUI, -1, -1, 1, 1, 2)
+						Return InvokeCustomMenuItems($iCmd)
+					EndIf
+					Return ShellContextMenu2($hGUI, $hWndListView, _WinAPI_GetMousePos(True, $hWndListView), $root_folder & '\' & $bLVItems[$iSelected][7] & $bLVItems[$iSelected][0])
+
 				Case $NM_DBLCLK
 					$tInfo = DllStructCreate($tagNMITEMACTIVATE, $LParam)
 					$Index = DllStructGetData($tInfo, "Index")
@@ -2292,8 +2294,6 @@ Func MY_WM_COMMAND($hWnd, $msg, $WParam, $LParam)
 				Case $BN_CLICKED
 					GUICtrlSendToDummy($Tbar, $nID)
 			EndSwitch
-		Case $rn_item, $rm_item, $copy_item, $copy_qq_item, $edit_item, $reload_item, $id3_item, $del_id3_item, $copy_lyr_item, $load_cover, $shell_item
-			GUICtrlSendToDummy($ListMenu, $nID)
 		Case $tq, $tq1, $tq2, $yh, $yh1, $yh2, $sc, $cr, $hd
 			GUICtrlSendToDummy($LyrMenu, $nID)
 	EndSwitch
@@ -2389,7 +2389,7 @@ Func WM_MOUSEWHEEL($hWnd, $iMsg, $WParam, $LParam)
 			$vol += $iLen / 10
 			If $vol > 1 Or $vol < 0 Then $vol = 1
 			_BASS_ChannelSetAttribute($MusicHandle, $BASS_ATTRIB_VOL, $vol)
-			ToolTip('音量: ' & Int($vol * 10))
+			_ToolTip('音量: ', Int($vol * 10), 2)
 		EndIf
 	EndIf
 	Return 0 ; If you return zero, then the message will not be sent to any more windows.

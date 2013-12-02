@@ -398,3 +398,118 @@ Func SetBitmap($dGUI, $hImage, $iOpacity)
     _WinAPI_DeleteObject($hBitmap)
     _WinAPI_DeleteDC($hMemDC)
 EndFunc ;==>SetBitmap
+
+Func ShellContextMenu2($hWnd, $hWndContext, $tPOINT, $sFullPath)
+	Local $parPidl, $cidl, $apidl
+	Local $pidlFQ, $pidlRel, $pIShellFolder, $IShellFolder
+	Local $hPopup, $iX, $iY, $iCmd, $fMask, $KeyState, $uFlags
+
+	If IsArray($sFullPath) Then
+		$cidl = UBound($sFullPath)																		; Number of entries in $apidl
+		$apidl = DllStructCreate("ptr[" & $cidl & "]")								; $apidl is an array of child PIDLs
+		$parPidl = _																										; Fully qualified PIDL for the parent folder
+			ILCreateFromPath(StringLeft($sFullPath[0], StringInStr($sFullPath[0], "\", 0, -1) - 1))
+		For $i = 1 To $cidl - 1																					; Fill the $apidl array
+			DllStructSetData($apidl, 1, ILFindChild($parPidl, ILCreateFromPath($sFullPath[$i])), $i+1)
+		Next																														; The first entry $pidlRel will be filled in below
+		$sFullPath = $sFullPath[0]																			; Set $sFullPath to first entry in $sFullPath[]
+	Else
+		$cidl = 1
+		$apidl = DllStructCreate("ptr")
+	EndIf
+
+	; Get the fully qualified PIDL associated with the file
+	$pidlFQ = ILCreateFromPath($sFullPath)
+
+	; Get an IShellFolder interface pointer ($pIShellFolder) for the parent folder
+	; and a PIDL ($pidlRel) associated with the file relative to the parent folder.
+	SHBindToParent($pidlFQ, DllStructGetPtr($tRIID_IShellFolder), $pIShellFolder, $pidlRel)
+
+	; Create an IDispatch-Object for the IShellFolder Interface
+	$IShellFolder = ObjCreateInterface($pIShellFolder, $sIID_IShellFolder, $dtagIShellFolder)
+
+	; Get a pointer to the IContextMenu Interface
+	DllStructSetData($apidl, 1, $pidlRel)
+	If $IShellFolder.GetUIObjectOf($NULL, $cidl, $apidl, $tRIID_IContextMenu, 0, $pIContextMenu) = $S_OK Then
+
+		; Create an IDispatch-Object for the IContextMenu Interface
+		$IContextMenu = ObjCreateInterface($pIContextMenu, $sIID_IContextMenu, $dtagIContextMenu)
+
+		; Create a Popup menu
+		$hPopup = _GUICtrlMenu_CreatePopup()
+
+		; Add commands to the Popup menu
+		$uFlags = $CMF_NORMAL
+		$KeyState = GetKeyState($VK_SHIFT)
+		If $KeyState < 0 Or $KeyState > 32768 Then _
+			$uFlags = BitOr($uFlags, $CMF_EXTENDEDVERBS)
+		$IContextMenu.QueryContextMenu($hPopup, 0, $idCmdFirst, $idCmdLast, $uFlags)
+
+		; Create an IDispatch-Object for the IContextMenu2 Interface
+		$IContextMenu.QueryInterface(DllStructGetPtr($tRIID_IContextMenu2), $pIContextMenu2)
+		$IContextMenu2 = ObjCreateInterface($pIContextMenu2, $sIID_IContextMenu2, $dtagIContextMenu2)
+
+		; Create an IDispatch-Object for the IContextMenu3 Interface
+		$IContextMenu.QueryInterface(DllStructGetPtr($tRIID_IContextMenu3), $pIContextMenu3)
+		$IContextMenu3 = ObjCreateInterface($pIContextMenu3, $sIID_IContextMenu3, $dtagIContextMenu3)
+
+		; Convert client coordinates to screen coordinates.
+		; This is among other things used to place the upper left corner
+		; of the Properties dialog box at the position of the mouse cursor.
+		_WinAPI_ClientToScreen($hWndContext, $tPoint)
+		$iX = DllStructGetData($tPoint, "X")
+		$iY = DllStructGetData($tPoint, "Y")
+
+		; Add the Popup menu to an existing menu
+		_GUICtrlMenu_InsertMenuItem($SubMenu, 9, "Shell Menu", 0, $hPopup)
+
+		; Show the menu and track the selection
+		Local $iCmd = TrackPopupMenuEx($SubMenu, $TPM_RETURNCMD, $iX, $iY, $hWnd)
+		If Not InvokeCustomMenuItems($iCmd) And $iCmd > 0 Then
+			; Create and fill a $tagCMINVOKECOMMANDINFOEX structure
+			Local $tCMINVOKECOMMANDINFOEX = DllStructCreate($tagCMINVOKECOMMANDINFOEX)
+			DllStructSetData($tCMINVOKECOMMANDINFOEX, "cbSize", DllStructGetSize($tCMINVOKECOMMANDINFOEX))
+			$fMask = BitOr($CMIC_MASK_UNICODE, $CMIC_MASK_PTINVOKE)
+			$KeyState = GetKeyState($VK_CONTROL)
+			If $KeyState < 0 Or $KeyState > 32768 Then _
+				$fMask = BitOr($fMask, $CMIC_MASK_CONTROL_DOWN)
+			$KeyState = GetKeyState($VK_SHIFT)
+			If $KeyState < 0 Or $KeyState > 32768 Then _
+				$fMask = BitOr($fMask, $CMIC_MASK_SHIFT_DOWN)
+			DllStructSetData($tCMINVOKECOMMANDINFOEX, "fMask", $fMask)
+			DllStructSetData($tCMINVOKECOMMANDINFOEX, "hWnd", $hWnd)
+			DllStructSetData($tCMINVOKECOMMANDINFOEX, "lpVerb", $iCmd - $idCmdFirst)
+			DllStructSetData($tCMINVOKECOMMANDINFOEX, "lpVerbW", $iCmd - $idCmdFirst)
+			DllStructSetData($tCMINVOKECOMMANDINFOEX, "nShow", $SW_SHOWNORMAL)
+			DllStructSetData($tCMINVOKECOMMANDINFOEX, "X", $iX)
+			DllStructSetData($tCMINVOKECOMMANDINFOEX, "Y", $iY)
+			; Invoke the command
+			$IContextMenu.InvokeCommand($tCMINVOKECOMMANDINFOEX)
+		EndIf
+
+		_GUICtrlMenu_DeleteMenu($SubMenu, 9)
+
+		; Free memory allocated by the PIDL
+		CoTaskMemFree($pidlFQ)
+
+		; Destroy menu and free memory
+		_GUICtrlMenu_DestroyMenu($hPopup)
+
+		$pIContextMenu3 = 0
+		$pIContextMenu2 = 0
+		$pIContextMenu = 0
+		$IContextMenu3 = 0
+		$IContextMenu2 = 0
+		$IContextMenu = 0
+		$IShellFolder = 0
+	EndIf
+EndFunc
+
+Func InvokeCustomMenuItems($iCmd)
+	If $iCmd >= $copy_item And $iCmd <= $load_cover Then
+    GUICtrlSendToDummy($ListMenu, $iCmd)
+		Return True
+	Else
+		Return False
+	EndIf
+EndFunc
